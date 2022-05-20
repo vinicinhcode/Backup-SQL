@@ -16,9 +16,12 @@ Set @Full     = @Path + '\' + @File;
 
 Set @Data     = @Database + '_Data';
 Set @Log      = @Database + '_Log';
-Set @Mdf      = @Path + '\' + @Database + '.mdf';
+Set @MdfPath  = @Path + '\' + @Database + '.mdf';
 Set @LogPath  = @Path + '\' + @Database + '.log';
 
-Use [Master]
+Use [Master];
 
-Restore database @Database From disk=@Full With NoRECOVERY
+Restore database @Database From disk=@Full WITH NORECOVERY,
+MOVE @Data TO @MdfPath,
+MOVE @Log  TO @LogPath,
+NOUNLOAD, STATS = 5
